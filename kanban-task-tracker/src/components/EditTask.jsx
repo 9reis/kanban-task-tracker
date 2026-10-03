@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useEffectEvent } from 'react'
 
-const EditTask = ({index, task, taskList, setTaskList }) => {
+const EditTask = ({task, taskList, setTaskList }) => {
     const [editModal, setEditModal] = useState(false);
 
     const [projectName, setProjectName] = useState("");
