@@ -23,7 +23,8 @@ function App() {
         my-4 py-2 px-4 bg-gray-300">To Do :</h2>
         {taskList.slice(0).reverse().map((task, i) =>
           <>
-            <ToDo key={new Date().getTime()} task={task} index={i} taskList={taskList} setTaskList={setTaskList} />
+            <ToDo key={new Date().getTime()} task={task} 
+            index={i} taskList={taskList} setTaskList={setTaskList} />
           </>
         )}
       </div>
