@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useEffectEvent } from 'react'
 
-const EditTask = ({task, taskList, setTaskList }) => {
+const EditTask = ({ task, taskList, setTaskList }) => {
     const [editModal, setEditModal] = useState(false);
 
     const [projectName, setProjectName] = useState("");
@@ -9,7 +9,7 @@ const EditTask = ({task, taskList, setTaskList }) => {
     useEffect(() => {
         setProjectName(task.projectName);
         setTaskDescription(task.taskDescription);
-    }, [])
+    }, []);
 
     const handleInput = ev => {
         const { name, value } = ev.target;
@@ -21,10 +21,15 @@ const EditTask = ({task, taskList, setTaskList }) => {
     const handleUpdate = e => {
         e.preventDefault();
         let taskIndex = taskList.indexOf(task);
-        taskList.splice(taskIndex, 1);
-        setTaskList(
-            [...taskList, { projectName, taskDescription }]
-        );
+        taskList.splice(taskIndex, 1, {
+            projectName: projectName,
+            taskDescription: taskDescription,
+            timestamp: task.timestamp,
+            duration: task.duration,
+        });
+        localStorage.setItem("taskList", JSON.stringify(taskList));
+        window.location.reload();
+
         setEditModal(false);
     }
     return (

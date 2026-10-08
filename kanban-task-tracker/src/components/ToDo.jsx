@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const ToDo = ({ task, index, taskList, setTaskList }) => {
 
-    const [time, setTime] = useState(0);
+    const [time, setTime] = useState(task.duration);
     const [running, setRunning] = useState(false);
 
     useEffect(() => {
@@ -19,11 +19,28 @@ const ToDo = ({ task, index, taskList, setTaskList }) => {
         return () => clearInterval(interval);
     }, [running]);
 
+    const handleStop = () => {
+        setRunning(false);
+
+        let taskIndex = taskList.indexOf(task);
+        taskList.splice(taskIndex, 1, {
+            projectName: task.projectName,
+            taskDescription: task.taskDescription,
+            timestamp: task.timestamp,
+            duration: time
+        })
+
+        localStorage.setItem("taskList", JSON.stringify(taskList))
+        window.location.reload();
+    }
+
     const handleDelete = itemID => {
         let removeIndex = taskList.indexOf(task);
         taskList.splice(removeIndex, 1);
-        setTaskList((currentTask => currentTask.filter(
-            todo => todo.id !== itemID)));
+        localStorage.setItem("taskList", JSON.stringify(taskList));
+        window.location.reload();
+        // setTaskList((currentTask => currentTask.filter(
+        //     todo => todo.id !== itemID)));
     }
 
     return (
@@ -46,13 +63,13 @@ const ToDo = ({ task, index, taskList, setTaskList }) => {
                     <div className='flex flex-row justify-evenly gap-4'>
                         {running ? (
                             <button className='border rounded-lg py-1 px-3'
-                                onClick={() => { setRunning(false) }}
+                                onClick={handleStop}
                             >
                                 Stop
                             </button>)
                             :
                             (<button className='border rounded-lg py-1 px-3'
-                                onClick={() => { setRunning(true) }}
+                                onClick={() => setRunning(true)}
                             >
                                 Start
                             </button>)}
